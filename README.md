@@ -1,8 +1,7 @@
 # Network Flow Example
 
 This project provides a simple implementation and example
-of the use of Ford-Fulkerson to find the maximum flow of
-a network.
+of fidning the maximum flow of a network.
 
 This implements the Edmonds-Karp algorithm for Ford-Fulkerson
 using breadth-first search and an adjacency matrix representation
@@ -14,10 +13,10 @@ of the network.
 
 The first draft used side-effects in Java, where a method modifies
 an object passed to it.
-The residualGraph array was passed into the method as a mutable object
+The `residualGraph` array was passed into the method as a mutable object
 to be modified by the method.
 It is a simple way to "return" multiple pieces of information,
-in this case the int flow (return value) and the int[][] graph.
+in this case the `int flow` (return value) and the `int[][] graph`.
 
 ### Argument Against Side-Effects (clean code)
 
@@ -31,27 +30,24 @@ to be changed by a method that looks like a simple calculation.
 
 - Thread Safety: If multiple threads access that array, side-effects can lead to race conditions.
 
-### Why do we treat returning the parent array and the residualGraph differently?
+### Why do we treat returning the `parent` array and the `residualGraph` differently?
 
 There is a subtle but important distinction in how these two arrays function within the logic:
 
-- The parent array is "Transient":
+- The `parent` array is "Transient":
 It is a temporary piece of scratchpad memory used only for a single iteration of a loop.
 It doesn't represent the "final result" of the algorithm; it's just a tool to get there.
 
-- The residualGraph is "Stateful":
+- The `residualGraph` is "Stateful":
 It represents the final state of the flow network.
 It is the data the user actually wants to inspect after the algorithm finishes.
 
-```
-parent:
+    `parent`:
 Internal.
 Hidden inside the utility logic.
 The user of the class never sees it.
 
-residualGraph:
+    `residualGraph`:
 External.
 User has to create this array just to call the method.
-The user then has to manage memory for the algorithm.
-Poor "encapsulation".
-```
+User manages memory for the algorithm: Poor "encapsulation".
